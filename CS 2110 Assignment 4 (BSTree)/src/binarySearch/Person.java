@@ -19,6 +19,14 @@ public class Person {//implements Runnable {
             t.start();
             */
     }
+    public Person(int n){
+		myNumber=n;
+    name = "customer "+n;
+    /*Thread t = new Thread(this);
+    t.setName(name);
+    t.start();
+    */
+}
     //Deprecated
     public int compareTo(Person o) {
 		int otherNumber = o.getMyNumber();

@@ -19,7 +19,8 @@ public class BSTree {
 	 * @param Person p
 	 */
 	public void join(Person p) {
-		root = join(p, root);
+		BTNode last = null;
+		root = join(p, root,last);
 		size++;
 	}//End join method
 
@@ -31,21 +32,19 @@ public class BSTree {
 	 * @param BTNode node
 	 * @return
 	 */
-	private BTNode join(Person p, BTNode node) {
-		BTNode last = null;
+	private BTNode join(Person p, BTNode node, BTNode last) {
 		if (node == null) {//System.out.println("node=null");
 		return new BTNode(p,last);}
 		//Person nodePerson= node.getData();
 		if (p.isLessThan(node.getData())) {//System.out.println("To the left");
-		last=node;node.setLeft(join(p, node.getLeft()));}
+		last=node;node.setLeft(join(p, node.getLeft(),last));}
 		else if (p.isMoreThan(node.getData())) {//System.out.println("To the right");
-		last=node;node.setRight(join(p, node.getRight()));}
+		last=node;node.setRight(join(p, node.getRight(),last));}
 		return node;
 	}//End join Method's recursive call
 	
-	
 	public void remove(Person p) {
-		if(isEmpty())
+		if(isEmpty()) {
 			try {
 				throw new Exception("Looking at an OPEN feild I can say " + p
 						+ " is not here. (This tree is Empty.)");
@@ -53,31 +52,70 @@ public class BSTree {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		BTNode node = find(p);
-		BTNode parent = node.getParent();
-		if(!node.hasChildren()) {//Has no children
-			
-			if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
-				parent.setLeft(null);}
-			else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
-				parent.setRight(null);}
-		}//End case where we have no children
-		else if (node.hasLeft()) { //Has left child
-			parent.setLeft(node.getLeft());
-			node.getLeft().setParent(parent);
-		}//End case where node only has left child
-		else if (node.hasRight()) { //Has right child
-			parent.setRight(node.getRight());
-			node.getRight().setParent(parent);
-		}//End case where node only has right child
-		else if (node.hasChildren()) {//Has Children, so replace with immediately higher
-			if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
-				parent.setLeft(node.getLeft())}
-			else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
-				parent.setRight(null);}
-		}
+		}//Close if
+		remove(p,find(p));
 		size--;
-	}
+	}//End Remove Method
+	
+	public void remove(Person p,BTNode node) {
+		BTNode parent = node.getParent();
+		if (parent==null) {
+			parent=new BTNode(new Person(0));
+		}
+		System.out.println("Node: " + node);
+		System.out.println("Parent: "+parent);
+		
+		if (node.has2Children()) {//Has Children, so replace with immediately higher
+			//System.out.println("Successor: "+getSuccessor(node));
+			//BTNode successor=getSuccessor(node);
+			//System.out.println("Successor: "+successor);
+			setParentChild(p,parent,getSuccessor(node));
+		}//End else if
+		else if(node.noChildren()) {//Has no children
+			setParentChild(p,parent,null);
+		}//End case where we have no children
+		else if (node.hasLeft()) { //Has no left child, replace with right
+			System.out.println("Left node child " +node.getLeft());
+			setParentChild(p,parent,node.getLeft());
+		}//End case where node has no left child
+		else if (node.hasRight()) { //Has no right child,replace with left
+			System.out.println("Right NOde child "+node.getRight());
+			setParentChild(p,parent,node.getRight());
+		}//End case where node has no right child
+	}//End Remove Method
+	
+	private void setParentChild(Person p,BTNode parent,BTNode node) {
+		if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
+			if(parent.getData().getMyNumber()==0){parent=node.getParent();node.setParent(null);}else parent.setLeft(node); System.out.println("PARENT: "+ parent); System.out.println("NODE:"+node);}
+		else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
+			if(parent.getData().getMyNumber()==0){parent=node.getParent();node.setParent(null);}else parent.setRight(node);System.out.println("PARENT: "+ parent);System.out.println("NODE:"+node);}
+		if (node!=null) node.setParent(parent);//Set the parent of replacement to parent
+	}//End SetParentChild Method
+	
+	private BTNode getSuccessor(BTNode king) {
+		BTNode parent=king;
+		BTNode successor=king;
+		BTNode current = king.getRight();//Go to larger child
+		while (current != null) {
+			parent=successor;
+			successor=current;
+			current= current.getLeft();//get the smallest child for replacement
+		}//End while loop
+		
+		if (successor != king.getRight()) {//Set the successor references to the replaced node.
+			parent.setLeft(successor.getRight());
+			successor.setRight(king.getRight());
+			
+			//Sets the parent of the children of the successor to the successor.
+			successor.getRight().setParent(successor);
+		}//End if prevents infinite loop
+		successor.setLeft(king.getLeft());
+		
+		//Sets the parent of the children of the successor to the successor.
+		successor.getLeft().setParent(successor);
+		System.out.println("Successor: "+successor);
+		return successor;
+	}//End getSuccessor method
 	/*
 	public BTNode remove(Person p) {
 		BTNode itr;
@@ -204,13 +242,14 @@ public class BSTree {
 	      "......................................................\n";
 	      return S;
 	}
+	/*
 	   private static String toString(String prefix,BTNode node) {
 		      if (node == null) return "";
 		      String string = prefix + node.getData().toString();
 		      if (node.getRight() != null)
 		         string = toString("    " + prefix, node.getRight()) + "\n" + string;
+		      return string;
 		      if (node.getLeft() != null)
 		         string = string + "\n" + toString("    " + prefix, node.getLeft());
-		      return string;
-		   }
+		   }*/
 }//End BSTree Class

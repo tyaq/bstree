@@ -49,9 +49,14 @@ public class BTNode {
 		parent = P ; 
 	}//End setParent Method
 	
-	public boolean hasChildren() {
+	public boolean has2Children() {
 		if (hasLeft() && hasRight()) return true;
 		else return false;
+	}
+	
+	public boolean noChildren() {
+		if (hasLeft() || hasRight()) return false;
+		else return true;
 	}
 	
 	public boolean hasLeft() {
@@ -65,7 +70,9 @@ public class BTNode {
 	}
 	
 	public String toString() {
-		String s=""+data+"\n\tLeft: ";
+		String s=""+data+"\n\tParent: ";
+		if(parent!=null){s+=parent.getData();}
+		s+="\n\tLeft: ";
 		if(left!=null){s+=left.getData();}
 		s+="\n\tRight: ";
 		if(right!=null){s+=right.getData();}
