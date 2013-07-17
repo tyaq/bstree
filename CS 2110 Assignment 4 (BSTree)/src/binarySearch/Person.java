@@ -1,34 +1,46 @@
 package binarySearch;
-
+/*
 import superMarket.Register;
 import superMarket.SuperMarket;
-
+*/
 //Copied from  supermarket.Person
-public class Person implements Runnable {
+public class Person {//implements Runnable {
     private String name;
-    private int spotInLine;
+    //private int spotInLine;
     private int myNumber;
-    private Register register;
+    //private Register register;
     private static int personNumber=1;
     public Person(){
     			myNumber=personNumber;
             name = "customer "+myNumber;
             personNumber++;
-            Thread t = new Thread(this);
+            /*Thread t = new Thread(this);
             t.setName(name);
             t.start();
-            
+            */
     }
-    
+    //Deprecated
     public int compareTo(Person o) {
 		int otherNumber = o.getMyNumber();
 		if (myNumber<otherNumber) return -1;
 		if (myNumber>otherNumber) return 1;
 		if (myNumber == otherNumber) return 0;
+		return otherNumber;//never gets to this
 	}
     
-    public boolean matchs(Person o) {
-    	if (myNumber == o.getMyNumber()) return true; 
+    
+    public boolean isLessThan(Person p) {
+    	if (myNumber<p.getMyNumber()) return true;
+    	else return false;
+    }
+    
+    public boolean isMoreThan(Person p) {
+    	if (myNumber>p.getMyNumber()) return true;
+    	else return false;
+    }
+    
+    public boolean matches(Person p) {
+    	if (myNumber == p.getMyNumber()) return true; 
     	else return false;
     }
     
@@ -36,7 +48,7 @@ public class Person implements Runnable {
     		return myNumber;
     }
     
-    public void run(){
+    /*public void run(){
     	while(SuperMarket.getRunning()){
     		try {
     			//Gives start up processes some buffer time.
@@ -64,18 +76,18 @@ public class Person implements Runnable {
     
     public void setRegister(Register r){
     	register=r;
-    }
+    }*/
     
     /**
      * People check if there is a shorter line than where they are in 
      * their line. If so they leave.
      */
-    public void leave(){
+    /*public void leave(){
     	if(spotInLine!=0 & spotInLine!=1 & spotInLine>Register.getShortestLine().getLength()+1){
     		System.out.println(this+" left their line");
     		register.leave(this);
     	}
-    }
+    }*/
     public String toString(){
             return name;
     }

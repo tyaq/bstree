@@ -36,4 +36,13 @@ public class BTNode {
 		right = R ; 
 	}//End setRight Method
 	
+	public String toString() {
+		String s=""+data+"\n\tLeft: ";
+		if(left!=null){s+=left.getData();}
+		s+="\n\tRight: ";
+		if(right!=null){s+=right.getData();}
+		s+="\n";
+		return s;
+	}
+	
 }//End BSNode Class
