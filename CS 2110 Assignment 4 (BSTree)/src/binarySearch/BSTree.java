@@ -59,9 +59,9 @@ public class BSTree {
 	
 	public void remove(Person p,BTNode node) {
 		BTNode parent = node.getParent();
-		if (parent==null) {
-			parent=new BTNode(new Person(0));
-		}
+		//if (parent==null) {
+		//	parent=new BTNode(new Person(0));
+		//}
 		System.out.println("Node: " + node);
 		System.out.println("Parent: "+parent);
 		
@@ -85,10 +85,13 @@ public class BSTree {
 	}//End Remove Method
 	
 	private void setParentChild(Person p,BTNode parent,BTNode node) {
+		if(parent==null){node.setParent(null);root=node;} 
+		else {//Normal logic how ever above if is for when removing the root of the tree
 		if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
-			if(parent.getData().getMyNumber()==0){parent=node.getParent();node.setParent(null);}else parent.setLeft(node); System.out.println("PARENT: "+ parent); System.out.println("NODE:"+node);}
+			parent.setLeft(node); System.out.println("PARENT: "+ parent); System.out.println("NODE:"+node);}
 		else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
-			if(parent.getData().getMyNumber()==0){parent=node.getParent();node.setParent(null);}else parent.setRight(node);System.out.println("PARENT: "+ parent);System.out.println("NODE:"+node);}
+			parent.setRight(node);System.out.println("PARENT: "+ parent);System.out.println("NODE:"+node);}
+		}//End else
 		if (node!=null) node.setParent(parent);//Set the parent of replacement to parent
 	}//End SetParentChild Method
 	
