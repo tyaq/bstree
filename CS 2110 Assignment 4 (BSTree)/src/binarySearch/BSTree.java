@@ -32,26 +32,60 @@ public class BSTree {
 	 * @return
 	 */
 	private BTNode join(Person p, BTNode node) {
+		BTNode last = null;
 		if (node == null) {//System.out.println("node=null");
-		return new BTNode(p);}
+		return new BTNode(p,last);}
 		//Person nodePerson= node.getData();
 		if (p.isLessThan(node.getData())) {//System.out.println("To the left");
-		node.setLeft(join(p, node.getLeft()));}
+		last=node;node.setLeft(join(p, node.getLeft()));}
 		else if (p.isMoreThan(node.getData())) {//System.out.println("To the right");
-		node.setRight(join(p, node.getRight()));}
+		last=node;node.setRight(join(p, node.getRight()));}
 		return node;
 	}//End join Method's recursive call
 	
 	
 	public void remove(Person p) {
-		//root = remove(p,root);
+		if(isEmpty())
+			try {
+				throw new Exception("Looking at an OPEN feild I can say " + p
+						+ " is not here. (This tree is Empty.)");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		BTNode node = find(p);
+		BTNode parent = node.getParent();
+		if(!node.hasChildren()) {//Has no children
+			
+			if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
+				parent.setLeft(null);}
+			else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
+				parent.setRight(null);}
+		}//End case where we have no children
+		else if (node.hasLeft()) { //Has left child
+			parent.setLeft(node.getLeft());
+			node.getLeft().setParent(parent);
+		}//End case where node only has left child
+		else if (node.hasRight()) { //Has right child
+			parent.setRight(node.getRight());
+			node.getRight().setParent(parent);
+		}//End case where node only has right child
+		else if (node.hasChildren()) {//Has Children, so replace with immediately higher
+			if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
+				parent.setLeft(node.getLeft())}
+			else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
+				parent.setRight(null);}
+		}
 		size--;
 	}
-	
-	public void remove(Person p, BTNode node) {
-		BTNode parent;
+	/*
+	public BTNode remove(Person p) {
+		BTNode itr;
+		if(!find(p).hasChildren()) {//Has no children
+			
+		}
 		
-	}
+	}*/
 	
 	/**
 	 * Searches through the tree looking for the Person.

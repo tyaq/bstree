@@ -3,11 +3,16 @@ package binarySearch;
 public class BTNode {
 	
 	private Person data;
-	private BTNode left,right;
+	private BTNode left,right,parent;
 	
-	//Constructor Method
-	public BTNode(Person p) {
+	//Constructor Methods
+	public BTNode(Person p,BTNode parentNode) {
 		data = p;
+		parent=parentNode;
+	}//End Constructor Method
+	
+	public BTNode(Person p) {
+		this(p,null);
 	}//End Constructor Method
 	
 	//Mutator and Accessory Methods
@@ -35,6 +40,29 @@ public class BTNode {
 	public void setRight ( BTNode R ) { 
 		right = R ; 
 	}//End setRight Method
+	
+	public BTNode getParent () { 
+		return parent ; 
+	}//End getParent Method
+	
+	public void setParent ( BTNode P ) { 
+		parent = P ; 
+	}//End setParent Method
+	
+	public boolean hasChildren() {
+		if (hasLeft() && hasRight()) return true;
+		else return false;
+	}
+	
+	public boolean hasLeft() {
+		if (left!=null) return true;
+		else return false;
+	}
+	
+	public boolean hasRight() {
+		if (right!=null) return true;
+		else return false;
+	}
 	
 	public String toString() {
 		String s=""+data+"\n\tLeft: ";
