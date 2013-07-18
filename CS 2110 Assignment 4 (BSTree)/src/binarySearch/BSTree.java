@@ -1,5 +1,6 @@
 package binarySearch;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class BSTree {
@@ -7,6 +8,9 @@ public class BSTree {
 	private BTNode root; // The root of the BST
 	private int size; //The number of nodes in BST
 	
+	/**
+	 * Constructor Method that creates a clean tree. 
+	 */
 	public BSTree() {
 		root=null;
 		size=0;
@@ -23,6 +27,21 @@ public class BSTree {
 		root = join(p, root,last);
 		size++;
 	}//End join method
+	
+	/**
+	 * Adds Person to tree, by running down from a node.
+	 * If they are already in the tree nothing happens.
+	 * This method should only be call be balance().
+	 * This calls to the join() recursive method.
+	 * @param Person p
+	 * @param BTNode tempRoot
+	 * @return BTNode tempRoot, a node with a tree built on it.
+	 */
+	private BTNode join(Person p, BTNode tempRoot) {
+		BTNode last = null;
+		tempRoot = join(p,tempRoot,last);
+		return tempRoot;
+	}
 
 	/**
 	 * Adds Person to the end of the tree,
@@ -43,6 +62,15 @@ public class BSTree {
 		return node;
 	}//End join Method's recursive call
 	
+	
+	/**
+	 * Removes person from tree.
+	 * Handles all cases in regards to from where
+	 * the person is being removed from.
+	 * This Method calls its more robust method.
+	 * 
+	 * @param Person p
+	 */
 	public void remove(Person p) {
 		if(isEmpty()) {
 			try {
@@ -62,7 +90,15 @@ public class BSTree {
 		size--;
 	}//End Remove Method
 	
-	public void remove(Person p,BTNode node) {
+	/**
+	 * Removes person from tree.
+	 * Handles all cases in regards to from where
+	 * the person is being removed from.
+	 * This Method calls a method which updates nodes accordingly.
+	 * @param Person p
+	 * @param BTNode node
+	 */
+	private void remove(Person p,BTNode node) {
 		BTNode parent = node.getParent();
 		//if (parent==null) {
 		//	parent=new BTNode(new Person(0));
@@ -89,6 +125,13 @@ public class BSTree {
 		}//End case where node has no right child
 	}//End Remove Method
 	
+	/**
+	 * This method updates parents and children of removed node.
+	 * 
+	 * @param Person p
+	 * @param BTNode parent
+	 * @param BTNode node
+	 */
 	private void setParentChild(Person p,BTNode parent,BTNode node) {
 		if(parent==null){node.setParent(null);root=node;} 
 		else {//Normal logic how ever above if is for when removing the root of the tree
@@ -100,6 +143,14 @@ public class BSTree {
 		if (node!=null) node.setParent(parent);//Set the parent of replacement to parent
 	}//End SetParentChild Method
 	
+	/**
+	 * Used in special case where a removed node has two children.
+	 * So this method finds the smallest Child of its larger trees.
+	 * 
+	 * @param BTNode king
+	 * @return BTNode successor that has the
+	 * 		 smallest node in removed nodes right tree.
+	 */
 	private BTNode getSuccessor(BTNode king) {
 		BTNode parent=king;
 		BTNode successor=king;
@@ -124,14 +175,6 @@ public class BSTree {
 		System.out.println("Successor: "+successor);
 		return successor;
 	}//End getSuccessor method
-	/*
-	public BTNode remove(Person p) {
-		BTNode itr;
-		if(!find(p).hasChildren()) {//Has no children
-			
-		}
-		
-	}*/
 	
 	/**
 	 * Searches through the tree looking for the Person.
@@ -173,11 +216,73 @@ public class BSTree {
 		else	 return find(p,node.getLeft());
 	}
 	
-	public void balance() {//tidyUp() balances tree according to median WIP
-		BTNode[] list = new BTNode[size];
+	/**
+	 * Takes an unbalanced tree and balances it by re-joining its nodes by medians.
+	 * This Method calls its detailed Method.
+	 */
+	public void balance() {
+		BTNode tempRoot=null;
+		root = balance(root,tempRoot);
+	}//End Balance call method
+	
+	/**
+	 * Takes an unbalanced tree and balances it by re-joining its nodes by medians.
+	 * It does this by converting the BST to an sorted list
+	 * then converting that list to a new tree.
+	 * 
+	 * @param BTNode node
+	 * @param BTNode tempRoot
+	 * @return BTNode tempRoot, a root node with a balanced tree running off of it.
+	 */
+	private BTNode balance(BTNode node,BTNode tempRoot) {//tidyUp() balances tree according to median WIP
+		if (node == null) return root; //empty tree
 		
+		//Get BST in sorted list format
+		ArrayList <Person> list = new ArrayList<Person>(size);
+		list=sort(list,node);
+		System.out.println(list);
 		
-	}
+		//Make that list into a new tree
+		return listToBST(list,0,list.size(),tempRoot);
+	}//End Balance Method
+	
+	/**
+	 * Takes the sorted data of the tree as a list and then uses the median for the root
+	 * of the tidied tree, the medians of the left and right halves for the root's children,
+	 * et segue, so ending up with a decently balanced tree.
+	 * 
+	 * @param list Sorted BST list
+	 * @param start Beginning int of sublist with relevant nodes.
+	 * @param end End int of sublist with relevant nodes.
+	 * @param tempRoot BTNode with working balanced tree
+	 * @return Balanced Tree
+	 */
+	private BTNode listToBST(ArrayList <Person> list, int start, int end,BTNode tempRoot) {
+		  if (start > end) return null;//If ludicrous number
+		  int mid = start + (end - start) / 2;
+		  if (mid>=list.size()) return null;//Catches Out of bounds index
+		  tempRoot = join(list.get(mid),tempRoot);//Creates an temp tree
+		  
+		  listToBST(list, start, mid-1, tempRoot);//Gets median of first half
+		  listToBST(list, mid+1, end, tempRoot);//Gets median of last half
+		  return tempRoot;//This is how the cookie crumbles
+	}//End method
+	
+	/**
+	 * Sorts the data of the tree to a list
+	 * 
+	 * @param list
+	 * @param node
+	 * @return
+	 */
+	private ArrayList <Person> sort(ArrayList <Person> list, BTNode node) {
+		if (node!=null){
+		sort(list,node.getLeft());
+		list.add(node.getData());
+		sort(list,node.getRight());
+		}
+		return list;
+	}//End sort Method
 	
 	/**
 	 * 
@@ -185,7 +290,7 @@ public class BSTree {
 	 */
 	public boolean isEmpty() {
 		return size==0;
-	}
+	}//End MEthod
 	
 	/**
 	 * 
@@ -193,15 +298,15 @@ public class BSTree {
 	 */
 	public int getSize() {
 		return size;
-	}
+	}//End MEthod
 	
 	/**
 	 * Probably don't need this
 	 * @param size
 	 */
-	public void setSize(int size) {
+	private void setSize(int size) {
 		this.size=size;
-	}
+	}//End Method
 	
 	/**
 	 * Recursively travels entire tree counting for max height.
@@ -227,10 +332,15 @@ public class BSTree {
 	}//End getFullNodes Method
 	
 	public String toString() {
-		String s = treeStats() + printTree();
+		String s = treeStats() + printTree();//Vertical
+		//String s = treeStats() + toString("",root);//Horizontal
 		return s;
 	}//toString Method
 	
+	/**
+	 * Makes tree stats to string.
+	 * @return answers to problem two
+	 */
 	private String treeStats() {
 		String s="The number of nodes is: "+size+"\n"
 				+"The number of edges is: ";
