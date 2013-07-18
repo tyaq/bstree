@@ -1,5 +1,6 @@
 package binarySearch;
 
+import java.lang.reflect.Array;
 import java.util.Stack;
 
 public class BSTree {
@@ -168,6 +169,12 @@ public class BSTree {
 		else	 return find(p,node.getLeft());
 	}
 	
+	public void balance() {//tidyUp() balances tree according to median WIP
+		BTNode[] list = new BTNode[size];
+		
+		
+	}
+	
 	/**
 	 * 
 	 * @return Boolean telling if tree is empty.
@@ -192,13 +199,47 @@ public class BSTree {
 		this.size=size;
 	}
 	
-	public String toString() {
-		String f ="Size: "+getSize()+"\n";
-		//return toString("",root);
-		return printTree();
-	}
+	/**
+	 * Recursively travels entire tree counting for max height.
+	 * @param node
+	 * @return Height of tree
+	 */
+	public int getHeight(BTNode node) {
+		if (node == null) return -1; //empty tree
+		if (node.noChildren()) return 0;
+		return 1 + Math.max(getHeight(node.getLeft()),getHeight(node.getRight()));
+	}//End height method
 	
-	public String printTree() {
+	/**
+	 * Recursively travels entire tree counting up nodes with 2 children.
+	 * @param BTNode node
+	 * @return int Number of Full Nodes
+	 */
+	public int getFullNodes(BTNode node) {
+		if (node==null) return 0;
+		if (node.has2Children()){return(1 + getFullNodes(node.getLeft()) 
+										+ getFullNodes(node.getRight()));}
+		return (getFullNodes(node.getLeft()) + getFullNodes(node.getRight()));
+	}//End getFullNodes Method
+	
+	public String toString() {
+		String s = treeStats() + printTree();
+		return s;
+	}//toString Method
+	
+	private String treeStats() {
+		String s="The number of nodes is: "+size+"\n"
+				+"The number of edges is: "+(size-1)+"\n"
+				+"The number of full nodes is: "+getFullNodes(root)+"\n"
+				+"The height of the tree is: "+getHeight(root)+"\n";
+		return s;
+	}//Returns answers to problem two
+	
+	/**
+	 * Creates a vertical tree in a string 
+	 * @return String with tree info formated
+	 */
+	private String printTree() {
 		Stack globalStack = new Stack();
 		String S="";
 	      globalStack.push(root);
@@ -245,14 +286,22 @@ public class BSTree {
 	      "......................................................\n";
 	      return S;
 	}
-	/*
-	   private static String toString(String prefix,BTNode node) {
-		      if (node == null) return "";
-		      String string = prefix + node.getData().toString();
-		      if (node.getRight() != null)
-		         string = toString("    " + prefix, node.getRight()) + "\n" + string;
-		      return string;
-		      if (node.getLeft() != null)
-		         string = string + "\n" + toString("    " + prefix, node.getLeft());
-		   }*/
+	
+	/**
+	 * Creates a horizontal tree in a string
+	 * @param String prefix
+	 * @param BTNode node
+	 * @return String with tree info formated
+	 */
+	@SuppressWarnings("unused")
+	private static String toString(String prefix,BTNode node) {   
+		if (node == null) return "";
+		String string = prefix + node.getData().toString();
+		if (node.getRight() != null)
+			string = toString("\t" + prefix, node.getRight()) + "\n" + string;
+		
+		if (node.getLeft() != null)
+			string = string + "\n" + toString("\t" + prefix, node.getLeft());
+		return string;
+	   }//End method printing tree
 }//End BSTree Class

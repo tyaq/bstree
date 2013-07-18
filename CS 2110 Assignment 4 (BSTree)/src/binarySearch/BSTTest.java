@@ -21,13 +21,10 @@ public class BSTTest {
 		t.join(a);
 		t.join(i);
 		t.join(b);
-		System.out.println(t.getSize());
 		System.out.println(t);
-		t.remove(c);
-		System.out.println(t.getSize());
+		t.remove(g);
 		System.out.println(t);
 		System.out.println(t.find(i));
-		System.out.println(t.find(g));
 		System.out.println(t.find(a));
 		//System.out.println(t.find(c));
 		//System.out.println(t.find(b));
