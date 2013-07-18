@@ -12,20 +12,13 @@ public class BSTTest {
 		Person h = new Person();//8
 		Person i = new Person();//9
 		BSTree t =new BSTree();
-		t.join(h);
-		t.join(g);
-		t.join(c);
-		t.join(e);
-		t.join(f);
-		t.join(d);
-		t.join(a);
-		t.join(i);
 		t.join(b);
+		t.join(i);
 		System.out.println(t);
-		t.remove(g);
+		t.remove(b);
 		System.out.println(t);
-		System.out.println(t.find(i));
-		System.out.println(t.find(a));
+		//System.out.println(t.find(i));
+		//System.out.println(t.find(a));
 		//System.out.println(t.find(c));
 		//System.out.println(t.find(b));
 		

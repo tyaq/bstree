@@ -53,6 +53,11 @@ public class BSTree {
 				e.printStackTrace();
 			}
 		}//Close if
+		if(size==1) {
+			root=null;
+			size--;
+			return;
+		}
 		remove(p,find(p));
 		size--;
 	}//End Remove Method
@@ -228,9 +233,13 @@ public class BSTree {
 	
 	private String treeStats() {
 		String s="The number of nodes is: "+size+"\n"
-				+"The number of edges is: "+(size-1)+"\n"
+				+"The number of edges is: ";
+				if(size==0){s+="0";}else{s+=(size-1);}
+				s+="\n"
 				+"The number of full nodes is: "+getFullNodes(root)+"\n"
-				+"The height of the tree is: "+getHeight(root)+"\n";
+				+"The height of the tree is: ";
+				if(getHeight(root)<0){s+="Does Not Exist";}else{s+=getHeight(root);}
+				s+="\n";
 		return s;
 	}//Returns answers to problem two
 	
