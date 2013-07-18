@@ -57,7 +57,7 @@ public class BSTree {
 			root=null;
 			size--;
 			return;
-		}
+		}//End if
 		remove(p,find(p));
 		size--;
 	}//End Remove Method
