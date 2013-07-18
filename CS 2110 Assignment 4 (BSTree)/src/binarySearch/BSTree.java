@@ -333,7 +333,7 @@ public class BSTree {
 	
 	public String toString() {
 		String s = treeStats() + printTree();//Vertical
-		//String s = treeStats() + toString("",root);//Horizontal
+		//String s =treeStats() +"\nTree:\n"+ toString("",root)+"\n";//Horizontal
 		return s;
 	}//toString Method
 	
