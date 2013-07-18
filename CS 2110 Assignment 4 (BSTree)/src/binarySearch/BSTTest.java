@@ -11,6 +11,15 @@ public class BSTTest {
 		Person g = new Person();//7
 		Person h = new Person();//8
 		Person i = new Person();//9
+		Person j = new Person();//1
+		Person k = new Person();//2
+		Person l = new Person();//3
+		Person m = new Person();//4
+		Person n = new Person();//5
+		Person o = new Person();//6
+		Person p = new Person();//7
+		Person q = new Person();//8
+		Person r = new Person();//9
 		BSTree t =new BSTree();
 		t.join(b);
 		t.join(i);
@@ -25,6 +34,15 @@ public class BSTTest {
 		t.join(c);
 		t.join(d);
 		t.join(g);
+		t.join(j);
+		t.join(k);
+		t.join(l);
+		t.join(m);
+		t.join(n);
+		t.join(o);
+		t.join(p);
+		t.join(q);
+		t.join(r);
 		System.out.println(t);
 		t.balance();
 		System.out.println(t);

@@ -332,8 +332,8 @@ public class BSTree {
 	}//End getFullNodes Method
 	
 	public String toString() {
-		String s = treeStats() + printTree();//Vertical
-		//String s =treeStats() +"\nTree:\n"+ toString("",root)+"\n";//Horizontal
+		//String s = treeStats() + printTree();//Vertical
+		String s =treeStats() +"\nTree:\n"+ toString("",root)+"\n";//Horizontal
 		return s;
 	}//toString Method
 	
