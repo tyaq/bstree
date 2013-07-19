@@ -11,3 +11,5 @@ Features:	 All actors in the supermarket have their own AI.
 			Balances tree
 
 ReadMe: There are some debug dialogs that pop-up but they should not be too bothersome. 
+Our estimate for runtime of balance method is O(n^2). As n elements of the tree are read and stored in a list.
+Then that n length list is read and stored in a balanced tree. Resulting in roughly n*n behavior with some coefficents.
