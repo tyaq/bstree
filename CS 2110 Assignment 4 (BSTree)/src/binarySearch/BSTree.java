@@ -136,9 +136,9 @@ public class BSTree {
 		if(parent==null){node.setParent(null);root=node;} 
 		else {//Normal logic how ever above if is for when removing the root of the tree
 		if (p.isLessThan(parent.getData())) {//System.out.println("To the left");
-			parent.setLeft(node); System.out.println("PARENT: "+ parent); System.out.println("NODE:"+node);}
+			parent.setLeft(node);} //System.out.println("PARENT: "+ parent); System.out.println("NODE:"+node);}
 		else if (p.isMoreThan(parent.getData())) {//System.out.println("To the right");
-			parent.setRight(node);System.out.println("PARENT: "+ parent);System.out.println("NODE:"+node);}
+			parent.setRight(node);}//System.out.println("PARENT: "+ parent);System.out.println("NODE:"+node);}
 		}//End else
 		if (node!=null) node.setParent(parent);//Set the parent of replacement to parent
 	}//End SetParentChild Method
@@ -172,7 +172,7 @@ public class BSTree {
 		
 		//Sets the parent of the children of the successor to the successor.
 		successor.getLeft().setParent(successor);
-		System.out.println("Successor: "+successor);
+		//System.out.println("Successor: "+successor);
 		return successor;
 	}//End getSuccessor method
 	
@@ -240,7 +240,7 @@ public class BSTree {
 		//Get BST in sorted list format
 		ArrayList <Person> list = new ArrayList<Person>(size);
 		list=sort(list,node);
-		System.out.println(list);
+		//System.out.println(list);
 		
 		//Make that list into a new tree
 		return listToBST(list,0,list.size(),tempRoot);
